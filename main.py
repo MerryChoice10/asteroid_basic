@@ -1,6 +1,8 @@
 import pygame
 from logger import log_state
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS
+from player import Player
+from circleshape import CircleShape
 
 def main():
     pygame.init()
@@ -9,16 +11,24 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}")
     clock = pygame.time.Clock()
     dt = 0.0
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    #Groups and player
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+    player = Player(x, y, PLAYER_RADIUS, 0)
     while True:
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        def fill():
-            pygame.Surface.fill("black")
+        updatable.update(dt)
+        screen.fill("black")
+        for item in drawable:
+            item.draw(screen)
         pygame.display.flip()
         dt = clock.tick(60) / 1000
-        #print(dt)
 
 if __name__ == "__main__":
     main()
